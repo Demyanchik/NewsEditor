@@ -1,0 +1,2 @@
+﻿Запускать в диспетчере пакетов.
+Scaffold-DbContext "Data Source=DB/NewsEditor.db" Microsoft.EntityFrameworkCore.Sqlite -Context MyDBContext -OutputDir DB/DatabaseModel -ContextDir DB -Force -UseDatabaseNames -NoPluralize -Namespace NewsEditor.Models
