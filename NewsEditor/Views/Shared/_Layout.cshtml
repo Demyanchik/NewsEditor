@@ -23,6 +23,9 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="NewsList">NewsList</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
@@ -39,10 +42,12 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
-    <div class="container overflow-auto" style="max-height:600px; margin-right: 0px;">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="overflow-auto h-50" style="max-height:600px;">
+        <div id="PageContainer" class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">   

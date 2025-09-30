@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "News List";
+}
+@using NewsEditor.Models.DB;
+@model List<News>
+
+<div>
+    @foreach (var article in Model)
+    {
+        @Html.Partial("~/Views/UI_Components/News_ListItem.cshtml", article)
+    }
+</div>

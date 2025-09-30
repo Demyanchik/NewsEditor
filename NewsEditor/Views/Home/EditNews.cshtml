@@ -2,9 +2,12 @@
 }
 @section Scripts {
     <script src="~/js/EditNews.js"></script>
-    }
-
-@using (Html.BeginForm("", "Home", FormMethod.Post))
+    @* <script>
+        $('#PageContainer').css('margin-right', '0px');
+    </script> *@
+}
+    
+@using (Html.BeginForm("CreateArticle", "Home", FormMethod.Post, new { enctype = "multipart/form-data"}))
 {
     <style>
         form * {
@@ -14,17 +17,17 @@
     <h2>Создание новости:</h2>
     <div class="form-group col-3">
         <label for="NewsHeader">Заголовок новости:</label>
-        <input type="text" class="form-control" id="NewsHeader" placeholder="Введите заголовок" required>
+        <input type="text" name="header" class="form-control" id="NewsHeader" placeholder="Введите заголовок" required>
     </div>
-    <img id="LoadedImage" style="max-height: 800px; max-width: 800px; display: none;" />
-    <input id="NewsImage" type="file" accept="image/*" onchange="ImageLoad(this);" required>
+    <img id="LoadedImage" style="max-height: 600px; max-width: 800px; display: none;" />
+    <input id="NewsImage" type="file" name="image" accept="image/*" onchange="ImageLoad(this);" required>
     <div class="form-group col-3">
         <label for="NewsSubHeader">Подзаголовок:</label>
-        <input type="text" class="form-control" id="NewsSubHeader" placeholder="Введите подзаголовок" required>
+        <input type="text" name="subHeader" class="form-control" id="NewsSubHeader" placeholder="Введите подзаголовок" required>
     </div>
     <div class="form-group col-5">
         <label for="NewsTextarea">Текст статьи:</label>
-        <textarea class="form-control" id="NewsTextarea" rows="10" required></textarea>
+        <textarea class="form-control" id="NewsTextarea" name="text" rows="10" required></textarea>
     </div>
     <input class="btn btn-primary" type="submit" value="Отправить" />
     

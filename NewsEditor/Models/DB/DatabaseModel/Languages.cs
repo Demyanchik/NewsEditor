@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NewsEditor.Models;
+namespace NewsEditor.Models.DB;
 
 public partial class Languages
 {

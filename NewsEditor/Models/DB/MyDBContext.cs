@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace NewsEditor.Models;
+namespace NewsEditor.Models.DB;
 
 public partial class MyDBContext : DbContext
 {
@@ -23,7 +23,7 @@ public partial class MyDBContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlite("Data Source=DB/NewsEditor.db");
+        => optionsBuilder.UseSqlite("Data Source=Models/DB/NewsEditor.db");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

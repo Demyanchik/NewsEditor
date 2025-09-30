@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NewsEditor.Models;
+namespace NewsEditor.Models.DB;
 
 public partial class News
 {
@@ -10,6 +10,8 @@ public partial class News
     public string Header { get; set; } = null!;
 
     public byte[]? Image { get; set; }
+
+    public string? ImageFormat { get; set; }
 
     public string? SubHeader { get; set; }
 
