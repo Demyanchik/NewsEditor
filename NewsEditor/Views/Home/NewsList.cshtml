@@ -4,9 +4,20 @@
 @using NewsEditor.Models.DB;
 @model List<News>
 
+<script>
+    $("#PageContainer").removeClass('container');
+</script>
+
 <div>
-    @foreach (var article in Model)
-    {
-        @Html.Partial("~/Views/UI_Components/News_ListItem.cshtml", article)
-    }
+    <div class="overflow-auto" style="max-height:536px;">
+        <div class="container">
+            @foreach (var article in Model)
+            {
+                @Html.Partial("~/Views/UI_Components/News_ListItem.cshtml", article)
+            }
+        </div>
+    </div>
+    <div class="container pt-2" style="padding-left: 4px;">
+        <a class="btn btn-outline-dark col-2" asp-controller="Home" asp-action="CreateNews">Создать статью</a>
+    </div>
 </div>

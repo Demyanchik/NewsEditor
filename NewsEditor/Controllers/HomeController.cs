@@ -39,7 +39,7 @@ namespace NewsEditor.Controllers
 
         public IActionResult GetImage(int articleId)
         {
-            var article = context.News.FirstOrDefault(article => article.Id == articleId);
+            var article = context.News.Find(articleId);
 
             if (article != null && article.Image != null)
             {
@@ -54,7 +54,10 @@ namespace NewsEditor.Controllers
 
         public IActionResult NewsList()
         {
-            return View(context.News.ToList());
+            var news = context.News.ToList();
+            news.Reverse();
+
+            return View(news);
         }
 
         public IActionResult Privacy()
@@ -62,7 +65,7 @@ namespace NewsEditor.Controllers
             return View();
         }
 
-        public IActionResult CreateArticle(string header, IFormFile image, string subHeader, string text)
+        public static byte[]? GetImageBytes(IFormFile image) 
         {
             byte[] imageData = null;
 
@@ -74,15 +77,46 @@ namespace NewsEditor.Controllers
                     imageData = memoryStream.ToArray();
                 }
             }
-            //получаем расширение файла без точки
-            var imageFormat = Path.GetExtension(image.FileName).Substring(1);
-            context.CreateArticle(header, imageData, imageFormat, subHeader, text);
+
+            return imageData;
+        }
+        /// <summary>
+        /// Получаем расширение файла без точки
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
+        public static string? GetImageExtension(IFormFile image)
+        {
+            return (image == null) ? null : Path.GetExtension(image?.FileName)?.Substring(1);
+        }
+
+        public IActionResult CreateArticle(string header, IFormFile image, string subHeader, string text)
+        {
+            context.CreateArticle(header, image, subHeader, text);
 
             return RedirectToAction("Index");
         }
-        public IActionResult EditNews()
+
+        public IActionResult UpdateArticle(int newsId, string header, string hasImage, IFormFile changedImage, string subHeader, string text) 
+        {
+            context.UpdateArticle(newsId, header, hasImage, changedImage, subHeader, text);
+
+            return RedirectToAction("NewsList");
+        }
+        public IActionResult CreateNews()
         {
             return View();
+        }
+        public IActionResult EditNews(int newsId)
+        {
+            var article = context.News.Find(newsId);
+            if (article != null) 
+            {
+                return View(article);
+            }
+
+            return NotFound();
+            
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

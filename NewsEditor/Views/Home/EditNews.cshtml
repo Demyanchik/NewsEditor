@@ -1,34 +1,62 @@
-﻿@{
+﻿@model NewsEditor.Models.DB.News
+@using NewsEditor.Controllers;
+@{
+    string Hostname = HomeController.ControllerRef.Hostname;
+    var ArticleImageUrl = Hostname + "Home/GetImage?articleId=" + Model.Id;
+    var hadImage = Model.Image != null;
 }
+
 @section Scripts {
-    <script src="~/js/EditNews.js"></script>
-    @* <script>
-        $('#PageContainer').css('margin-right', '0px');
-    </script> *@
+<script src="~/js/EditNews.js"></script>
 }
-    
-@using (Html.BeginForm("CreateArticle", "Home", FormMethod.Post, new { enctype = "multipart/form-data"}))
+@using (Html.BeginForm("UpdateArticle", "Home", FormMethod.Post, new { enctype = "multipart/form-data"}))
 {
     <style>
         form * {
-            margin-top: 8px;
+        margin-top: 8px;
         }
     </style>
-    <h2>Создание новости:</h2>
+    <h2>Редактирование новости:</h2>
     <div class="form-group col-3">
         <label for="NewsHeader">Заголовок новости:</label>
-        <input type="text" name="header" class="form-control" id="NewsHeader" placeholder="Введите заголовок" required>
+        <input type="text" name="header" class="form-control" id="NewsHeader" placeholder="Введите заголовок" value="@Model.Header" required>
     </div>
-    <img id="LoadedImage" style="max-height: 600px; max-width: 800px; display: none;" />
-    <input id="NewsImage" type="file" name="image" accept="image/*" onchange="ImageLoad(this);" required>
+
+    <p id="ImageText">
+        @if (hadImage)
+        {
+            @:Для новости установлена следующая фотография:
+        }
+        else
+        {
+            @:Изображение отсутствует.
+        }
+    </p>
+
+    <div id="ImageView" class="row" style="@(hadImage ? "" : "display: none;")">
+        <img id="LoadedImage" class="col" style="max-height: 600px; max-width: 800px; display: block;" src="@(hadImage ? ArticleImageUrl : "")" />
+        <button type="button" class="col-2 btn btn-dark h-25" onclick="removeImage();">Удалить изображение</button>
+    </div>
+
+    @* Содержит выбор файлов пользователя, в том числе null при отмене выбора *@
+    <input id="NewsImage" type="file" name="image" accept="image/*" onchange="ImageLoad(this);" class="d-none">
+    @* Содержит только последний выбранный файл, без отмен выбора *@
+    <input id="ChangeImage" type="file" name="changedImage" accept="image/*" class="d-none">
+
+    <input name="newsId" type="hidden" value="@Model.Id" />
+    <input id="HasImage" type="checkbox" name="hasImage" class="d-none" />
+
+    <input type="button" class="btn btn-outline-secondary" onclick="$('#NewsImage').click();" value="Выбрать изображение">
+    
+
     <div class="form-group col-3">
         <label for="NewsSubHeader">Подзаголовок:</label>
-        <input type="text" name="subHeader" class="form-control" id="NewsSubHeader" placeholder="Введите подзаголовок" required>
+        <input type="text" name="subHeader" class="form-control" id="NewsSubHeader" placeholder="Введите подзаголовок" value="@Model.SubHeader" required>
     </div>
     <div class="form-group col-5">
         <label for="NewsTextarea">Текст статьи:</label>
-        <textarea class="form-control" id="NewsTextarea" name="text" rows="10" required></textarea>
+        <textarea class="form-control" id="NewsTextarea" name="text" rows="10" required>@Model.Text</textarea>
     </div>
-    <input class="btn btn-primary" type="submit" value="Отправить" />
-    
+    <input class="btn btn-outline-dark col-2" type="submit" value="Сохранить" onclick="submitNewsEditing();" />
+    <a class="btn btn-secondary col-2" asp-controller="Home" asp-action="NewsList">Отмена</a>  
 }

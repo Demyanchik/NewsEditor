@@ -1,0 +1,42 @@
+﻿@{
+}
+@section Scripts {
+    <script src="~/js/EditNews.js"></script>
+    @* <script>
+        $('#PageContainer').css('margin-right', '0px');
+    </script> *@
+}
+    
+@using (Html.BeginForm("CreateArticle", "Home", FormMethod.Post, new { enctype = "multipart/form-data"}))
+{
+    <style>
+        form * {
+            margin-top: 8px;
+        }
+    </style>
+    <h2>Создание новости:</h2>
+    <div class="form-group col-3">
+        <label for="NewsHeader">Заголовок новости:</label>
+        <input type="text" name="header" class="form-control" id="NewsHeader" placeholder="Введите заголовок" required>
+    </div>
+    
+    <p id="ImageText">Новость будет создана без изображения.</p>
+    <div id="ImageView" class="row" style="display: none;">
+        <img id="LoadedImage" class="col" style="max-height: 600px; max-width: 800px; display: block;" />
+        <button type="button" class="col-2 btn btn-dark h-25" onclick="removeImage();">Удалить изображение</button>
+    </div>
+    <input id="NewsImage" type="file" name="image" accept="image/*" onchange="ImageLoad(this);" class="d-none">
+    <input id="ChangeImage" type="file" name="changedImage" accept="image/*" class="d-none">
+    <input type="button" class="btn btn-outline-secondary" onclick="$('#NewsImage').click();" value="Выбрать изображение">
+
+    <div class="form-group col-3">
+        <label for="NewsSubHeader">Подзаголовок:</label>
+        <input type="text" name="subHeader" class="form-control" id="NewsSubHeader" placeholder="Введите подзаголовок" required>
+    </div>
+    <div class="form-group col-5">
+        <label for="NewsTextarea">Текст статьи:</label>
+        <textarea class="form-control" id="NewsTextarea" name="text" rows="10" required></textarea>
+    </div>
+    <input class="btn btn-outline-dark col-2" type="submit" value="Создать новость" />
+    <a class="btn btn-secondary col-2" asp-controller="Home" asp-action="Index">Отмена</a>
+}
