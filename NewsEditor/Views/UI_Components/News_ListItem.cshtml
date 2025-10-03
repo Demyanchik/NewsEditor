@@ -5,6 +5,8 @@
 @{
     string Hostname = HomeController.ControllerRef.Hostname;
     var ArticleImageUrl = Hostname + "Home/GetImage?articleId=" + Model.Id;
+    Random rnd = new Random();
+    var color = rnd.Next(150, 256);
 }
 
 <style>
@@ -22,8 +24,17 @@
     }
 </style>
 
-<div class="card h-33 NewsItem" style="background-image: url('@ArticleImageUrl');">
+<div class="card h-33 NewsItem" style="
+    @if(Model.Image != null)
+    {
+        @:background-image: url('@ArticleImageUrl');
+    }
+    else
+    {
+        @:background-color: rgb(@color, @color, @color);
+    }
+">
     <h1>@Model.Header</h1>
-    <h6>@Model.SubHeader</h6>
+    <h6 style="height: 20px;">@Model.SubHeader</h6>
     @Html.Partial("~/Views/UI_Components/News_ListItem_options.cshtml", Model)
 </div>

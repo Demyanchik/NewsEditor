@@ -1,0 +1,8 @@
+﻿@using NewsEditor.Models.DB;
+@using NewsEditor.Controllers;
+@model News
+
+<div>
+    <a class="btn btn-dark col" asp-controller="Home" asp-action="EditNews" asp-route-newsId="@Model.Id">Редактировать статью</a>
+    <button class="btn btn-dark col" data-bs-toggle="modal" data-bs-target="#DeleteArticle" onclick="setDeleteArticleView('@Model.Id', '@Model.Header');">Удалить статью</button>
+</div>

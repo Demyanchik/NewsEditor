@@ -21,5 +21,7 @@ public partial class News
 
     public string? TimeCreated { get; set; }
 
+    public int Deleted { get; set; }
+
     public virtual Users? User { get; set; }
 }

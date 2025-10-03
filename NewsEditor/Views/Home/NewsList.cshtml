@@ -7,10 +7,26 @@
 <script>
     $("#PageContainer").removeClass('container');
 </script>
-
+<script src="~/js/GetNextNewsInList.js"></script>
+@* <style>
+    .ajax_form_hidden {
+        visibility: collapse;
+        width: 0px;
+        height: 0px;
+    }
+</style> *@
+<form asp-action="GetNextNews" asp-controller="Home" method="POST"
+      data-ajax="true"
+      data-ajax-update="#NextNews"
+      data-ajax-complete=""
+      class="d-none">
+    <input id="last_shown_article_id" name="lastShownArticleId" type="hidden" value="@Model.LastOrDefault(new News{ Id = -1}).Id"/>
+    <input id="GetNextNews" type="submit"/>
+</form>
+<div id="NextNews" class="d-none"></div>
 <div>
-    <div class="overflow-auto" style="max-height:536px;">
-        <div class="container">
+    <div class="overflow-auto" style="max-height: 72vh;" onscroll="onNewsScroll(this);">
+        <div id="NewsContainer" class="container">
             @foreach (var article in Model)
             {
                 @Html.Partial("~/Views/UI_Components/News_ListItem.cshtml", article)

@@ -2,9 +2,6 @@
 }
 @section Scripts {
     <script src="~/js/EditNews.js"></script>
-    @* <script>
-        $('#PageContainer').css('margin-right', '0px');
-    </script> *@
 }
     
 @using (Html.BeginForm("CreateArticle", "Home", FormMethod.Post, new { enctype = "multipart/form-data"}))
@@ -31,11 +28,11 @@
 
     <div class="form-group col-3">
         <label for="NewsSubHeader">Подзаголовок:</label>
-        <input type="text" name="subHeader" class="form-control" id="NewsSubHeader" placeholder="Введите подзаголовок" required>
+        <input type="text" name="subHeader" class="form-control" id="NewsSubHeader" placeholder="Введите подзаголовок">
     </div>
     <div class="form-group col-5">
         <label for="NewsTextarea">Текст статьи:</label>
-        <textarea class="form-control" id="NewsTextarea" name="text" rows="10" required></textarea>
+        <textarea class="form-control" id="NewsTextarea" name="text" rows="8" style="width: 50vw;" required></textarea>
     </div>
     <input class="btn btn-outline-dark col-2" type="submit" value="Создать новость" />
     <a class="btn btn-secondary col-2" asp-controller="Home" asp-action="Index">Отмена</a>

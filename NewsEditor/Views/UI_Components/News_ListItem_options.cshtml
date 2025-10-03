@@ -4,10 +4,10 @@
 
 <div class="position-relative" style="padding-top: 35px;">
     <div class="position-absolute start-0">
-        <a class="btn btn-dark" asp-controller="Home" asp-action="">Открыть статью</a>
+        <a class="btn btn-dark" asp-controller="Home" asp-action="Article" asp-route-id="@Model.Id">Открыть статью</a>
     </div>
     <div class="position-absolute end-0">
         <a class="btn btn-dark" asp-controller="Home" asp-action="EditNews" asp-route-newsId="@Model.Id">Редактировать статью</a>
-        <button class="btn btn-dark">Удалить статью</button>
+        <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#DeleteArticle" onclick="setDeleteArticleView('@Model.Id', '@Model.Header');">Удалить статью</button>
     </div>
 </div>

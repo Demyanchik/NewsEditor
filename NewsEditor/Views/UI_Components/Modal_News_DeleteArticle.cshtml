@@ -1,0 +1,33 @@
+﻿<div class="modal fade" id="DeleteArticle" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <style>
+            .modal_borders {
+                border: none;
+            }
+
+            .modal_body {
+                min-height: 100px;
+                padding: 1rem 1.5rem;
+            }
+        </style>
+        <div class="modal-content">
+            @using (Html.BeginForm("DeleteArticle", "Home", FormMethod.Post))
+            {
+                <input type="hidden" id="delete_article_id" name="id"/>
+                <div class="modal-header">
+                    <h6 class="modal-title">Удаление статьи</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal_body">
+                    <span class="fs-5">Вы действительно хотите удалить статью - <span class="">«<span id="delete_article_header">Заголовок статьи</span>»</span>?</span>
+                </div>
+                <div class="modal-footer modal_borders">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Отмена
+                    </button>
+                    <button type="submit" class="btn btn-outline-dark">Удалить статью</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

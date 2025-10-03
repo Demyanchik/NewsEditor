@@ -54,10 +54,29 @@ namespace NewsEditor.Controllers
 
         public IActionResult NewsList()
         {
-            var news = context.News.ToList();
+            var news = context.News.Where(news => news.Deleted == 0).ToList();
             news.Reverse();
 
-            return View(news);
+            var top_news = news.Take(5).ToList();
+
+            return View(top_news);
+        }
+
+        public IActionResult GetNextNews(int lastShownArticleId = -1)
+        {
+            if (lastShownArticleId < 0)
+                return View(null);
+
+            var selectedNews = context.News.ToList();
+            selectedNews.Reverse();
+
+            var lastShownArticle = selectedNews.Find(a => a.Id == lastShownArticleId);
+            var startIndex = selectedNews.IndexOf(lastShownArticle);
+
+            var listAfter = selectedNews.Skip(startIndex + 1);
+            var resultNews = listAfter.Where(a => a.Deleted == 0).Take(5);
+
+            return PartialView("~/Views/UI_Components/GetNextNews.cshtml", resultNews);
         }
 
         public IActionResult Privacy()
@@ -94,7 +113,7 @@ namespace NewsEditor.Controllers
         {
             context.CreateArticle(header, image, subHeader, text);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("NewsList");
         }
 
         public IActionResult UpdateArticle(int newsId, string header, string hasImage, IFormFile changedImage, string subHeader, string text) 
@@ -103,14 +122,30 @@ namespace NewsEditor.Controllers
 
             return RedirectToAction("NewsList");
         }
+        public IActionResult DeleteArticle(int id) 
+        {
+            context.DeleteArticle(id);
+
+            return RedirectToAction("NewsList");
+        }
         public IActionResult CreateNews()
         {
             return View();
         }
+        public IActionResult Article(int id) 
+        {
+            var article = context.News.Find(id);
+            if (article != null && article.Deleted == 0)
+            {
+                return View(article);
+            }
+
+            return NotFound();
+        }
         public IActionResult EditNews(int newsId)
         {
             var article = context.News.Find(newsId);
-            if (article != null) 
+            if (article != null && article.Deleted == 0) 
             {
                 return View(article);
             }

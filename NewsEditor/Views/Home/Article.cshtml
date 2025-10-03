@@ -1,0 +1,50 @@
+﻿@using NewsEditor.Models.DB;
+@using NewsEditor.Controllers;
+@model News
+@section Scripts {
+<script>
+    $(document).ready(function () {
+    $("#PageMain").css('background-color', 'rgb(245,245,245)');
+    $("#PageMain").css('padding', '1rem');
+    });
+</script>
+}
+
+@{
+    var TextParagraphs = Model.Text.Split("\r\n");
+}
+@if (Model.Image != null)
+{
+    var ArticleImageUrl = HomeController.ControllerRef.Hostname + "Home/GetImage?articleId=" + Model.Id;
+    <div class="d-flex justify-content-center" style="margin: -1rem -1rem 0; background-color: rgb(225, 225, 225);">
+        <img src="@ArticleImageUrl" style="max-width: 80vw; max-height: 50vh;" />
+    </div>
+
+}
+<div class="row">
+    <div class="col-8">
+        <h1>@Model.Header</h1>
+        @if(Model.SubHeader != null)
+        {
+            <h4>@Model.SubHeader</h4>
+        }
+        <p style="font-size: 16px; color: gray;">Время публикации: @(DateTime.Parse(Model.TimeCreated).ToString("f"))</p>
+    </div>
+    <div class="col" style="padding: 1rem 1rem 1rem 5rem;">
+        @Html.Partial("~/Views/UI_Components/Article_options.cshtml", Model)
+    </div>
+</div>
+
+<br />
+<div style="font-size: 18px;">
+    @foreach (var paragraph in TextParagraphs)
+    {
+        @paragraph
+        <br />
+    }
+</div>
+<br />
+@if(Model.User?.FullName != null)
+{
+    <p>Автор - @Model.User?.FullName</p>
+}

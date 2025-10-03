@@ -15,6 +15,8 @@ public partial class Users
 
     public int? Language { get; set; }
 
+    public int Deleted { get; set; }
+
     public virtual Languages? LanguageNavigation { get; set; }
 
     public virtual ICollection<News> News { get; set; } = new List<News>();

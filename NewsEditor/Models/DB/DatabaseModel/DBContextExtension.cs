@@ -59,4 +59,10 @@ public partial class MyDBContext : DbContext
         
         SaveChanges();
     }
+
+    public void DeleteArticle(int id) 
+    {
+        News.Find(id).Deleted = 1;
+        SaveChanges();
+    }
 }
