@@ -1,0 +1,8 @@
+.a_for_slider {
+    height: 79vh !important;
+    text-decoration: none;
+    padding: 1rem 2rem;
+}
+.a_for_slider:hover {
+    color: rgb(80,80,80);
+}

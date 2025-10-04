@@ -1,13 +1,54 @@
 ﻿@* @{
     ViewData["Title"] = "Home Page";
 } *@
+@using NewsEditor.Models.DB;
+@using NewsEditor.Controllers;
+@using NewsEditor.Models.ViewModels;
+@model List<News>
 
-@section Scripts {
-}
+<link rel="stylesheet" href="~/css/Home_Slider.css">
 
-<div id="Page" style="">
+<div class="d-flex justify-content-center">
+    <div id="MainSlider" class="carousel slide" style="width: 60vw; max-height: 80vh;" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+            @if (Model.Count() > 0)
+            {
+                <li data-bs-target="#MainSlider" data-bs-slide-to="0"
+                class="active" @* style="background-color: black;" *@></li>
+            }            
+            @for (int i = 1; i < Model.Count(); i++)
+            {
+                <li data-bs-target="#MainSlider" data-bs-slide-to="@i"
+                @* style="background-color: black;" *@></li>
+            }            
+        </ol>
+
+        <div class="carousel-inner">
+            @if (Model.Count() > 0)
+            {
+                Html.RenderPartial("~/Views/UI_Components/Home_SliderItem.cshtml", new Home_SlideModel(Model.First(), true));
+            }
+            @for (int i = 1; i < Model.Count; i++)
+            {
+                Html.RenderPartial("~/Views/UI_Components/Home_SliderItem.cshtml", new Home_SlideModel(Model[i], false));
+            }
+            @* <div class="carousel-item">
+                <div class="card" style="height: 60vh !important; background-color:gray;">3</div>
+            </div> *@
+        </div>
+
+        <a class="carousel-control-prev" href="#MainSlider" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </a>
+        <a class="carousel-control-next" href="#MainSlider" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </a>
+    </div>
+</div>
+
+@* <div id="Page" style="">
     <div class="text-center">
         <h1 class="display-4">Welcome</h1>
         <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     </div>
-</div>
+</div> *@

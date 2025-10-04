@@ -1,29 +1,12 @@
 ﻿@using NewsEditor.Models.DB;
 @using NewsEditor.Controllers;
 @model News
-
 @{
     string Hostname = HomeController.ControllerRef.Hostname;
     var ArticleImageUrl = Hostname + "Home/GetImage?articleId=" + Model.Id;
     Random rnd = new Random();
-    var color = rnd.Next(150, 256);
+    var color = rnd.Next(120, 256);
 }
-
-<style>
-    .NewsItem {
-        padding: 6px 15px;
-        margin-bottom: 10px;
-        background-color: rgba(255,255,255,0.5);
-        background-blend-mode: lighten;
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-    }
-
-    .h-33 {
-        height: @(600 * 0.30)px;
-    }
-</style>
-
 <div class="card h-33 NewsItem" style="
     @if(Model.Image != null)
     {
@@ -34,6 +17,8 @@
         @:background-color: rgb(@color, @color, @color);
     }
 ">
+@* Передаем инпут, содержащий id для JavaScript-а *@
+    <input type="hidden" value="@Model.Id" />
     <h1>@Model.Header</h1>
     <h6 style="height: 20px;">@Model.SubHeader</h6>
     @Html.Partial("~/Views/UI_Components/News_ListItem_options.cshtml", Model)

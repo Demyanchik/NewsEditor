@@ -5,6 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using NewsEditor.Models;
 using NewsEditor.Models.DB;
 
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Hosting;
+
 namespace NewsEditor.Controllers
 {
     public class HomeController : Controller
@@ -24,7 +32,11 @@ namespace NewsEditor.Controllers
             }
         }
 
-        public HomeController(ILogger<HomeController> logger)
+        int Index_slider_news_count { get; set; } = 5;
+        int NewsList_start_news_count { get; set; } = 5;
+        int NewsList_loading_news_count { get; set; } = 2;
+
+        public HomeController(ILogger<HomeController> logger, IRazorViewEngine viewEngine)
         {
             _logger = logger;
 
@@ -32,9 +44,17 @@ namespace NewsEditor.Controllers
             ControllerRef = this;
         }
 
-        public IActionResult Index()
+        public IActionResult LogIn() 
         {
             return View();
+        }
+
+        public IActionResult Index()
+        {
+            var news = context.News.ToList();
+            news.Reverse();
+
+            return View(news.Take(Index_slider_news_count).ToList());
         }
 
         public IActionResult GetImage(int articleId)
@@ -57,7 +77,7 @@ namespace NewsEditor.Controllers
             var news = context.News.Where(news => news.Deleted == 0).ToList();
             news.Reverse();
 
-            var top_news = news.Take(5).ToList();
+            var top_news = news.Take(NewsList_start_news_count).ToList();
 
             return View(top_news);
         }
@@ -65,7 +85,7 @@ namespace NewsEditor.Controllers
         public IActionResult GetNextNews(int lastShownArticleId = -1)
         {
             if (lastShownArticleId < 0)
-                return View(null);
+                return PartialView("~/Views/UI_Components/GetNextNews.cshtml", null);
 
             var selectedNews = context.News.ToList();
             selectedNews.Reverse();
@@ -74,7 +94,7 @@ namespace NewsEditor.Controllers
             var startIndex = selectedNews.IndexOf(lastShownArticle);
 
             var listAfter = selectedNews.Skip(startIndex + 1);
-            var resultNews = listAfter.Where(a => a.Deleted == 0).Take(5);
+            var resultNews = listAfter.Where(a => a.Deleted == 0).Take(NewsList_loading_news_count);
 
             return PartialView("~/Views/UI_Components/GetNextNews.cshtml", resultNews);
         }

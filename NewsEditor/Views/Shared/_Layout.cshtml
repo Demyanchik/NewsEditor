@@ -28,6 +28,26 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="col d-flex flex-row-reverse">
+                            <style>
+                                .ml{
+                                    margin-left: 0.5rem;
+                                }
+                            </style>
+                            <a class="btn btn-outline-dark ml" asp-controller="Home" asp-action="LogIn">Войти в систему</a>
+                            <div class="dropdown ml">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" 
+                                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+                                        style="height: 40px;">
+                                    Русский
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item active" href="#">Русский</a></li>
+                                    <li><a class="dropdown-item" href="#">Английский</a></li>
+                                </ul>
+                            </div>
+                            <span class="ml" style="padding: 0.25rem 0.75rem 0 0;">Язык:</span>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -39,6 +59,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script src="~/js/DeleteArticle.js"></script>
+    <script src="~/js/jquery.unobtrusive-ajax.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

@@ -8,17 +8,13 @@
     $("#PageContainer").removeClass('container');
 </script>
 <script src="~/js/GetNextNewsInList.js"></script>
-@* <style>
-    .ajax_form_hidden {
-        visibility: collapse;
-        width: 0px;
-        height: 0px;
-    }
-</style> *@
+
+<link rel="stylesheet" href="~/css/NewsList_Item.css">
+
 <form asp-action="GetNextNews" asp-controller="Home" method="POST"
       data-ajax="true"
       data-ajax-update="#NextNews"
-      data-ajax-complete=""
+      data-ajax-complete="GetNextNewsResponse();"
       class="d-none">
     <input id="last_shown_article_id" name="lastShownArticleId" type="hidden" value="@Model.LastOrDefault(new News{ Id = -1}).Id"/>
     <input id="GetNextNews" type="submit"/>

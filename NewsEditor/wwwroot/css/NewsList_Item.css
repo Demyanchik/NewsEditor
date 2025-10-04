@@ -1,0 +1,12 @@
+.NewsItem {
+    padding: 6px 15px;
+    margin-bottom: 10px;
+    background-color: rgba(255,255,255,0.5);
+    background-blend-mode: lighten;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+}
+
+.h-33 {
+    height: 180px;
+}
