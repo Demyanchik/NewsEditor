@@ -4,11 +4,13 @@
 @{
     var IsAuthorized = (bool)(ViewBag.IsAuthorized);
     var User = (Users?)(ViewBag.AuthorizedUser);
+
+    Dictionary<string, string> LangPack = ViewBag.LangPack;
 }
 @if (IsAuthorized)
 {
     <div>
-        <a class="btn btn-dark col" asp-controller="Home" asp-action="EditNews" asp-route-newsId="@Model.Id">Редактировать статью</a>
-        <button class="btn btn-dark col" data-bs-toggle="modal" data-bs-target="#DeleteArticle" onclick="setDeleteArticleView('@Model.Id', '@Model.Header');">Удалить статью</button>
+        <a class="btn btn-dark col" asp-controller="Home" asp-action="EditNews" asp-route-newsId="@Model.Id">@LangPack["edit_article"]</a>
+        <button class="btn btn-dark col" data-bs-toggle="modal" data-bs-target="#DeleteArticle" onclick="setDeleteArticleView('@Model.Id', '@Model.Header');">@LangPack["delete_article"]</button>
     </div>
 }
