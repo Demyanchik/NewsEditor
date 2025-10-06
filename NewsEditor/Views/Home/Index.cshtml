@@ -1,6 +1,7 @@
-﻿@* @{
-    ViewData["Title"] = "Home Page";
-} *@
+﻿@{
+    Dictionary<string, string> LangPack = ViewBag.LangPack;
+    ViewData["Title"] = LangPack["home_title"];
+}
 @using NewsEditor.Models.DB;
 @using NewsEditor.Controllers;
 @using NewsEditor.Models.ViewModels;

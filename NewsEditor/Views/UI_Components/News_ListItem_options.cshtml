@@ -1,12 +1,21 @@
 ﻿@using NewsEditor.Models.DB;
 @using NewsEditor.Controllers;
+@{
+    var IsAuthorized = (bool)(ViewBag.IsAuthorized);
+    var User = (Users?)(ViewBag.AuthorizedUser);
+
+    Dictionary<string, string> LangPack = ViewBag.LangPack;
+}
 @model News
 <div class="position-relative" style="padding-top: 35px;">
     <div class="position-absolute start-0">
-        <a class="btn btn-dark" asp-controller="Home" asp-action="Article" asp-route-id="@Model.Id">Открыть статью</a>
+        <a class="btn btn-dark" asp-controller="Home" asp-action="Article" asp-route-id="@Model.Id">@LangPack["read_article"]</a>
     </div>
-    <div class="position-absolute end-0">
-        <a class="btn btn-dark" asp-controller="Home" asp-action="EditNews" asp-route-newsId="@Model.Id">Редактировать статью</a>
-        <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#DeleteArticle" onclick="setDeleteArticleView('@Model.Id', '@Model.Header');">Удалить статью</button>
-    </div>
+    @if (IsAuthorized)
+    {
+        <div class="position-absolute end-0">
+            <a class="btn btn-dark" asp-controller="Home" asp-action="EditNews" asp-route-newsId="@Model.Id">@LangPack["edit_article"]</a>
+            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#DeleteArticle" onclick="setDeleteArticleView('@Model.Id', '@Model.Header');">@LangPack["delete_article"]</button>
+        </div>
+    }
 </div>

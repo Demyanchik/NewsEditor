@@ -1,5 +1,9 @@
 ﻿@{
-    ViewData["Title"] = "News List";
+    Dictionary<string, string> LangPack = ViewBag.LangPack;
+
+    ViewData["Title"] = LangPack["news_list"];
+    var IsAuthorized = (bool)(ViewBag.IsAuthorized);
+    var User = (Users?)(ViewBag.AuthorizedUser);
 }
 @using NewsEditor.Models.DB;
 @model List<News>
@@ -12,10 +16,10 @@
 <link rel="stylesheet" href="~/css/NewsList_Item.css">
 
 <form asp-action="GetNextNews" asp-controller="Home" method="POST"
-      data-ajax="true"
-      data-ajax-update="#NextNews"
-      data-ajax-complete="GetNextNewsResponse();"
-      class="d-none">
+data-ajax="true"
+data-ajax-update="#NextNews"
+data-ajax-complete="GetNextNewsResponse();"
+class="d-none">
     <input id="last_shown_article_id" name="lastShownArticleId" type="hidden" value="@Model.LastOrDefault(new News{ Id = -1}).Id"/>
     <input id="GetNextNews" type="submit"/>
 </form>
@@ -29,7 +33,10 @@
             }
         </div>
     </div>
-    <div class="container pt-2" style="padding-left: 4px;">
-        <a class="btn btn-outline-dark col-2" asp-controller="Home" asp-action="CreateNews">Создать статью</a>
-    </div>
+    @if (IsAuthorized)
+    {
+        <div class="container pt-2" style="padding-left: 4px;">
+            <a class="btn btn-outline-dark col-2" asp-controller="Home" asp-action="CreateNews">@LangPack["create_article"]</a>
+        </div>
+    }
 </div>

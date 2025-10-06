@@ -1,52 +1,81 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - NewsEditor</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/NewsEditor.styles.css" asp-append-version="true" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NewsEditor</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+﻿@using NewsEditor.Models.DB;
+@{
+    var IsAuthorized = (bool)(ViewBag.IsAuthorized);
+    var User = (Users?)(ViewBag.AuthorizedUser);
+    
+    Dictionary<string, string> LangPack = ViewBag.LangPack;
+}
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>@ViewData["Title"] - @LangPack["project_name"]</title>
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+            <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/NewsEditor.styles.css" asp-append-version="true" />
+        </head>
+        <body>
+            <header>
+                <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@LangPack["project_name"]</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="NewsList">NewsList</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="col d-flex flex-row-reverse">
-                            <style>
-                                .ml{
-                                    margin-left: 0.5rem;
-                                }
-                            </style>
-                            <a class="btn btn-outline-dark ml" asp-controller="Home" asp-action="LogIn">Войти в систему</a>
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                            <ul class="navbar-nav flex-grow-1">
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@LangPack["home_link"]</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="NewsList">@LangPack["news_list"]</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@LangPack["privacy"]</a>
+                                </li>
+                                <li class="col d-flex flex-row-reverse">
+                                    <style>
+                                        .ml{
+                                        margin-left: 0.5rem;
+                                        }
+                                    </style>
+                                    @if (IsAuthorized)
+                                    {
+                                        <div class="nav-item dropdown ml">
+                                            <button class="btn dropdown-toggle" type="button" style="min-width: 180px" id="DM1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                @User.Login
+                                            </button>
+                                            <ul class="dropdown-menu" style="min-width: 180px" aria-labelledby="DM1">
+                                                <li><a class="dropdown-item" asp-controller="Home" asp-action="LogOut">@LangPack["logout_btn"]</a></li>
+                                            </ul>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-outline-dark ml" asp-controller="Home" asp-action="LogIn">@LangPack["login_btn"]</a>
+                                    }
                             <div class="dropdown ml">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" 
-                                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
-                                        style="height: 40px;">
-                                    Русский
+                                id="DM2" data-bs-toggle="dropdown" aria-expanded="false"
+                                style="height: 40px;">
+                                    @ViewBag.CurrentLanguageName
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item active" href="#">Русский</a></li>
-                                    <li><a class="dropdown-item" href="#">Английский</a></li>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="DM2">
+                                    @{
+                                        List<Languages> languages = ViewBag.Languages;
+                                        int currentLanguageId = ViewBag.CurrentLanguageId;
+                                    }
+                                    @foreach (var language in languages)
+                                    {
+                                        <li><a class="dropdown-item @(language.Id == currentLanguageId ? "active" : "")"
+                                               asp-controller="Home" asp-action="SetLanguage" asp-route-LanguageId="@language.Id">@LangPack["language_name_" + language.Language]</a>
+                                        </li>
+                                    }
                                 </ul>
                             </div>
-                            <span class="ml" style="padding: 0.25rem 0.75rem 0 0;">Язык:</span>
+                            <span class="ml" style="padding: 0.25rem 0.75rem 0 0;">@LangPack["lang"]</span>
                         </li>
                     </ul>
                 </div>
@@ -77,7 +106,7 @@
 
     <footer class="border-top footer text-muted">   
         <div class="container">
-            &copy; @DateTime.Now.Year - Демьянчик Илья Сергеевич - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - @LangPack["FIO"] - <a asp-controller="Home" asp-action="Privacy">@LangPack["privacy"]</a>
         </div>
     </footer>
     

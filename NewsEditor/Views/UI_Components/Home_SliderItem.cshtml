@@ -7,6 +7,8 @@
     var ArticleImageUrl = Hostname + "Home/GetImage?articleId=" + Model.Article?.Id;
     Random rnd = new Random();
     var color = rnd.Next(120, 256);
+
+    Dictionary<string, string> LangPack = ViewBag.LangPack;
 }
 
 <div class="carousel-item 
@@ -29,7 +31,7 @@
         <div style="background-color:rgba(255,255,255, 0.5); margin: -1rem -2rem; padding: 1rem 2rem;">
             <h2>@Model.Article?.Header</h2>
             <h5 style="height: 20px;">@Model.Article?.SubHeader</h5>
-            <span style="font-size: 16px; color: rgb(80,80,80); margin-top: 0.5rem;">Время публикации: @(DateTime.Parse(Model.Article.TimeCreated).ToString("f"))</span>
+            <span style="font-size: 16px; color: rgb(80,80,80); margin-top: 0.5rem;">@LangPack["publication_time"] @(DateTime.Parse(Model.Article.TimeCreated).ToString("f"))</span>
             @* @Html.Partial("~/Views/UI_Components/News_ListItem_options.cshtml", Model) *@
         </div>
     </a>

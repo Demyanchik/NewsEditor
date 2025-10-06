@@ -1,6 +1,9 @@
 ﻿@using NewsEditor.Models.DB;
 @using NewsEditor.Controllers;
 @model News
+@{
+    Dictionary<string, string> LangPack = ViewBag.LangPack;
+}
 @section Scripts {
 <script>
     $(document).ready(function () {
@@ -12,6 +15,7 @@
 
 @{
     var TextParagraphs = Model.Text.Split("\r\n");
+    ViewData["Title"] = Model.Header;
 }
 @if (Model.Image != null)
 {
@@ -28,7 +32,7 @@
         {
             <h4>@Model.SubHeader</h4>
         }
-        <p style="font-size: 16px; color: gray;">Время публикации: @(DateTime.Parse(Model.TimeCreated).ToString("f"))</p>
+        <p style="font-size: 16px; color: gray;">@LangPack["publication_time"] @(DateTime.Parse(Model.TimeCreated).ToString("f"))</p>
     </div>
     <div class="col" style="padding: 1rem 1rem 1rem 5rem;">
         @Html.Partial("~/Views/UI_Components/Article_options.cshtml", Model)

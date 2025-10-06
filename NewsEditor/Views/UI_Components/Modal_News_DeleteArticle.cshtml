@@ -1,4 +1,7 @@
-﻿<div class="modal fade" id="DeleteArticle" tabindex="-1" aria-hidden="true">
+﻿@{
+    Dictionary<string, string> LangPack = ViewBag.LangPack;
+}
+<div class="modal fade" id="DeleteArticle" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <style>
             .modal_borders {
@@ -15,17 +18,17 @@
             {
                 <input type="hidden" id="delete_article_id" name="id"/>
                 <div class="modal-header">
-                    <h6 class="modal-title">Удаление статьи</h6>
+                    <h6 class="modal-title">@LangPack["rm_art_header"]</h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body modal_body">
-                    <span class="fs-5">Вы действительно хотите удалить статью - <span class="">«<span id="delete_article_header">Заголовок статьи</span>»</span>?</span>
+                    <span class="fs-5">@LangPack["rm_confirmation"] - <span class="">«<span id="delete_article_header">Заголовок статьи</span>»</span>?</span>
                 </div>
                 <div class="modal-footer modal_borders">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Отмена
+                        @LangPack["cancel"]
                     </button>
-                    <button type="submit" class="btn btn-outline-dark">Удалить статью</button>
+                    <button type="submit" class="btn btn-outline-dark">@LangPack["rm_art_btn"]</button>
                 </div>
             }
         </div>

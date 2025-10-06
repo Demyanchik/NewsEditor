@@ -1,6 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    Dictionary<string, string> LangPack = ViewBag.LangPack;
+    ViewData["Title"] = LangPack["privacy_header"];
 }
-<h1>@ViewData["Title"]</h1>
+<h1>@LangPack["privacy_header"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<p>@LangPack["privacy_text"]</p>

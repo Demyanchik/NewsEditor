@@ -1,6 +1,9 @@
 ﻿@model NewsEditor.Models.DB.News
 @using NewsEditor.Controllers;
 @{
+    Dictionary<string, string> LangPack = ViewBag.LangPack;
+
+    ViewData["Title"] = LangPack["edit_art_title"] + Model.Header;
     string Hostname = HomeController.ControllerRef.Hostname;
     var ArticleImageUrl = Hostname + "Home/GetImage?articleId=" + Model.Id;
     var hadImage = Model.Image != null;
@@ -16,26 +19,26 @@
         margin-top: 8px;
         }
     </style>
-    <h2>Редактирование новости:</h2>
+    <h2>@LangPack["edit_art_page_header"]</h2>
     <div class="form-group col-3">
-        <label for="NewsHeader">Заголовок новости:</label>
-        <input type="text" name="header" class="form-control" id="NewsHeader" placeholder="Введите заголовок" value="@Model.Header" required>
+        <label for="NewsHeader">@LangPack["new_art_header"]</label>
+        <input type="text" name="header" class="form-control" id="NewsHeader" placeholder="@LangPack["new_art_header_undertext"]" value="@Model.Header" required>
     </div>
 
     <p id="ImageText">
         @if (hadImage)
         {
-            @:Для новости установлена следующая фотография:
+            @:@LangPack["edit_art_had_picture"]
         }
         else
         {
-            @:Изображение отсутствует.
+            @:@LangPack["edit_art_had_no_picture"]
         }
     </p>
 
     <div id="ImageView" class="row" style="@(hadImage ? "" : "display: none;")">
         <img id="LoadedImage" class="col" style="max-height: 600px; max-width: 800px; display: block;" src="@(hadImage ? ArticleImageUrl : "")" />
-        <button type="button" class="col-2 btn btn-dark h-25" onclick="removeImage();">Удалить изображение</button>
+        <button type="button" class="col-2 btn btn-dark h-25" onclick="removeImage();">@LangPack["rm_image_btn"]</button>
     </div>
 
     @* Содержит выбор файлов пользователя, в том числе null при отмене выбора *@
@@ -46,17 +49,17 @@
     <input name="newsId" type="hidden" value="@Model.Id" />
     <input id="HasImage" type="checkbox" name="hasImage" class="d-none" />
 
-    <input type="button" class="btn btn-outline-secondary" onclick="$('#NewsImage').click();" value="Выбрать изображение">
+    <input type="button" class="btn btn-outline-secondary" onclick="$('#NewsImage').click();" value="@LangPack["chose_img"]">
     
 
     <div class="form-group col-3">
-        <label for="NewsSubHeader">Подзаголовок:</label>
-        <input type="text" name="subHeader" class="form-control" id="NewsSubHeader" placeholder="Введите подзаголовок" value="@Model.SubHeader">
+        <label for="NewsSubHeader">@LangPack["new_art_subheader"]</label>
+        <input type="text" name="subHeader" class="form-control" id="NewsSubHeader" placeholder="@LangPack["new_art_subheader_undertext"]" value="@Model.SubHeader">
     </div>
     <div class="form-group col-5">
-        <label for="NewsTextarea">Текст статьи:</label>
+        <label for="NewsTextarea">@LangPack["new_art_text"]</label>
         <textarea class="form-control" id="NewsTextarea" name="text" rows="10" style="width: 50vw;" required>@Model.Text</textarea>
     </div>
-    <input class="btn btn-outline-dark col-2" type="submit" value="Сохранить" onclick="submitNewsEditing();" />
-    <a class="btn btn-secondary col-2" asp-controller="Home" asp-action="NewsList">Отмена</a>  
+    <input class="btn btn-outline-dark col-2" type="submit" value="@LangPack["edit_art_save"]" onclick="submitNewsEditing();" />
+    <a class="btn btn-secondary col-2" asp-controller="Home" asp-action="NewsList">@LangPack["cancel"]</a>
 }

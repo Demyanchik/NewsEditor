@@ -1,4 +1,6 @@
 ﻿@{
+    Dictionary<string, string> LangPack = ViewBag.LangPack;
+    ViewData["Title"] = LangPack["new_art_title"];
 }
 @section Scripts {
     <script src="~/js/EditNews.js"></script>
@@ -11,29 +13,29 @@
             margin-top: 8px;
         }
     </style>
-    <h2>Создание новости:</h2>
+    <h2>@LangPack["create_art_page_header"]</h2>
     <div class="form-group col-3">
-        <label for="NewsHeader">Заголовок новости:</label>
-        <input type="text" name="header" class="form-control" id="NewsHeader" placeholder="Введите заголовок" required>
+        <label for="NewsHeader">@LangPack["new_art_header"]</label>
+        <input type="text" name="header" class="form-control" id="NewsHeader" placeholder="@LangPack["new_art_header_undertext"]" required>
     </div>
-    
-    <p id="ImageText">Новость будет создана без изображения.</p>
+
+    <p id="ImageText">@LangPack["new_art_no_picture"]</p>
     <div id="ImageView" class="row" style="display: none;">
         <img id="LoadedImage" class="col" style="max-height: 600px; max-width: 800px; display: block;" />
-        <button type="button" class="col-2 btn btn-dark h-25" onclick="removeImage();">Удалить изображение</button>
+        <button type="button" class="col-2 btn btn-dark h-25" onclick="removeImage();">@LangPack["rm_image_btn"]</button>
     </div>
     <input id="NewsImage" type="file" name="image" accept="image/*" onchange="ImageLoad(this);" class="d-none">
     <input id="ChangeImage" type="file" name="changedImage" accept="image/*" class="d-none">
-    <input type="button" class="btn btn-outline-secondary" onclick="$('#NewsImage').click();" value="Выбрать изображение">
+    <input type="button" class="btn btn-outline-secondary" onclick="$('#NewsImage').click();" value="@LangPack["chose_img"]">
 
     <div class="form-group col-3">
-        <label for="NewsSubHeader">Подзаголовок:</label>
-        <input type="text" name="subHeader" class="form-control" id="NewsSubHeader" placeholder="Введите подзаголовок">
+        <label for="NewsSubHeader">@LangPack["new_art_subheader"]</label>
+        <input type="text" name="subHeader" class="form-control" id="NewsSubHeader" placeholder="@LangPack["new_art_subheader_undertext"]">
     </div>
     <div class="form-group col-5">
-        <label for="NewsTextarea">Текст статьи:</label>
+        <label for="NewsTextarea">@LangPack["new_art_text"]</label>
         <textarea class="form-control" id="NewsTextarea" name="text" rows="8" style="width: 50vw;" required></textarea>
     </div>
-    <input class="btn btn-outline-dark col-2" type="submit" value="Создать новость" />
-    <a class="btn btn-secondary col-2" asp-controller="Home" asp-action="Index">Отмена</a>
+    <input class="btn btn-outline-dark col-2" type="submit" value="@LangPack["new_art_submit"]" />
+    <a class="btn btn-secondary col-2" asp-controller="Home" asp-action="Index">@LangPack["cancel"]</a>
 }
