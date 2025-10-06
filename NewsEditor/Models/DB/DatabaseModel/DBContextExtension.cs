@@ -5,6 +5,7 @@ using NewsEditor.Models.DB;
 using static System.Net.Mime.MediaTypeNames;
 
 using NewsEditor.Controllers;
+using System.Runtime.CompilerServices;
 
 namespace NewsEditor.Models.DB;
 
@@ -17,7 +18,7 @@ public partial class MyDBContext : DbContext
     /// <param name="image"></param>
     /// <param name="subHeader"></param>
     /// <param name="text"></param>
-    public void CreateArticle(string header, IFormFile image, string? subHeader, string? text)
+    public void CreateArticle(string header, IFormFile image, int? userId, string? subHeader, string? text)
     {
         var new_article = new News();
 
@@ -29,7 +30,7 @@ public partial class MyDBContext : DbContext
         new_article.Header = header;
         new_article.SubHeader = subHeader;
         new_article.Text = text;
-        new_article.User = null;
+        new_article.UserId = userId;
         new_article.TimeCreated = DateTime.Now.ToString();
 
         News.Add(new_article);

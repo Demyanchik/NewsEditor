@@ -23,16 +23,13 @@ namespace NewsEditor.Controllers
             get
             {
                 Uri requestUri = new Uri(HttpContext.Request.GetDisplayUrl());
-
-                string schemeAndAuthority = requestUri.GetLeftPart(UriPartial.Scheme | UriPartial.Authority);
-
-                return schemeAndAuthority + '/';
+                return requestUri.GetLeftPart(UriPartial.Scheme | UriPartial.Authority) + '/';
             }
         }
 
         int Index_slider_news_count { get; set; } = 5;
         int NewsList_start_news_count { get; set; } = 5;
-        int NewsList_loading_news_count { get; set; } = 2;
+        int NewsList_loading_news_count { get; set; } = 3;
         Dictionary<string, string> CurrentLanguage { get; set; } = LangPacks.Russian;
 
         public HomeController(ILogger<HomeController> logger)
@@ -72,6 +69,40 @@ namespace NewsEditor.Controllers
             
             return LangPacks.GetLanguagePack();
         }
+        void setAuthorizedUserLanguage(int LanguageId)
+        {
+            if ((bool)ViewBag.IsAuthorized)
+            {
+                var user = (Users)ViewBag.AuthorizedUser;
+                user.Language = LanguageId;
+                context.SaveChanges();
+            }
+        }
+        public static byte[]? GetImageBytes(IFormFile image)
+        {
+            byte[] imageData = null;
+
+            if (image != null && image.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    image.CopyTo(memoryStream);
+                    imageData = memoryStream.ToArray();
+                }
+            }
+
+            return imageData;
+        }
+        /// <summary>
+        /// Получаем расширение файла без точки
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
+        public static string? GetImageExtension(IFormFile image)
+        {
+            return (image == null) ? null : Path.GetExtension(image?.FileName)?.Substring(1);
+        }
+
         public IActionResult LogIn() 
         {
             try
@@ -111,15 +142,6 @@ namespace NewsEditor.Controllers
 
             return RedirectOnPreviousPage();
         }
-        void setAuthorizedUserLanguage(int LanguageId)
-        {
-            if ((bool)ViewBag.IsAuthorized) 
-            {
-                var user = (Users)ViewBag.AuthorizedUser;
-                user.Language = LanguageId;
-                context.SaveChanges();
-            }
-        }
         public IActionResult SetLanguage(int LanguageId) 
         {
             if(context.Languages.Find(LanguageId) == null)
@@ -135,8 +157,6 @@ namespace NewsEditor.Controllers
             
             return RedirectOnPreviousPage();
         }
-
-
         public IActionResult Index()
         {
             //устанавливаем user-у язык из куки
@@ -146,12 +166,11 @@ namespace NewsEditor.Controllers
                 setAuthorizedUserLanguage(int.Parse(languageId));
             }
 
-            var news = context.News.ToList();
+            var news = context.News.Where(art => art.Deleted == 0).ToList();
             news.Reverse();
 
             return View(news.Take(Index_slider_news_count).ToList());
         }
-
         public IActionResult GetImage(int articleId)
         {
             var article = context.News.Find(articleId);
@@ -166,7 +185,6 @@ namespace NewsEditor.Controllers
 
             return NotFound();
         }
-
         public IActionResult NewsList()
         {
             var news = context.News.Where(news => news.Deleted == 0).ToList();
@@ -176,7 +194,6 @@ namespace NewsEditor.Controllers
 
             return View(top_news);
         }
-
         public IActionResult GetNextNews(int lastShownArticleId = -1)
         {
             if (lastShownArticleId < 0)
@@ -193,40 +210,14 @@ namespace NewsEditor.Controllers
 
             return PartialView("~/Views/UI_Components/GetNextNews.cshtml", resultNews);
         }
-
         public IActionResult Privacy()
         {
             return View();
         }
-
-        public static byte[]? GetImageBytes(IFormFile image) 
-        {
-            byte[] imageData = null;
-
-            if (image != null && image.Length > 0)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    image.CopyTo(memoryStream);
-                    imageData = memoryStream.ToArray();
-                }
-            }
-
-            return imageData;
-        }
-        /// <summary>
-        /// Получаем расширение файла без точки
-        /// </summary>
-        /// <param name="image"></param>
-        /// <returns></returns>
-        public static string? GetImageExtension(IFormFile image)
-        {
-            return (image == null) ? null : Path.GetExtension(image?.FileName)?.Substring(1);
-        }
         [AdminFilter]
-        public IActionResult CreateArticle(string header, IFormFile image, string subHeader, string text)
+        public IActionResult CreateArticle(string header, IFormFile image, int? userId, string subHeader, string text)
         {
-            context.CreateArticle(header, image, subHeader, text);
+            context.CreateArticle(header, image, userId, subHeader, text);
 
             return RedirectToAction("NewsList");
         }
@@ -254,6 +245,7 @@ namespace NewsEditor.Controllers
             var article = context.News.Find(id);
             if (article != null && article.Deleted == 0)
             {
+                article.User = context.Users.Find(article.UserId);
                 return View(article);
             }
 
@@ -271,7 +263,6 @@ namespace NewsEditor.Controllers
             return NotFound();
             
         }
-
         public IActionResult RedirectOnPreviousPage(string DefaultAction = "Index") 
         {
             string previousUrl = Request.Headers["Referer"].ToString();

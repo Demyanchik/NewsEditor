@@ -4,7 +4,7 @@ $(document).ready(function () {
     Image = $('#LoadedImage');
 });
 
-function ImageLoad(file) {
+function ImageLoad(file, image_text = "") {
     // убираем изображение
     if (file.files.length === 0)
         return;
@@ -21,17 +21,17 @@ function ImageLoad(file) {
             Image.attr('src', e.target.result);
             $('#ImageView').css('display', ''); // Делаем изображение видимым
 
-            $('#ImageText').html('Для новости будет установлено следующее изображение:');
+            $('#ImageText').html(image_text);
         }
 
         reader.readAsDataURL(img); // Читаем файл как URL данных
     }
 }
 
-function removeImage() {
+function removeImage(image_text = "") {
     Image.removeAttr('src');
     $('#ImageView').css('display', 'none');
-    $('#ImageText').html('Новость будет сохранена без изображения.');
+    $('#ImageText').html(image_text);
 
     $('#ChangeImage').val(null);
 }

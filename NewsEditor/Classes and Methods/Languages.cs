@@ -163,6 +163,18 @@
             Russian.Add("login_page", "Вход");
             English.Add("login_page", "Login");
 
+            Russian.Add("edit_art_set_image", "Для новости будет установлено следующее изображение:");
+            English.Add("edit_art_set_image", "The following image will be set for the news:");
+
+            Russian.Add("edit_art_set_no_image", "Новость будет сохранена без изображения.");
+            English.Add("edit_art_set_no_image", "The news will be saved without an image.");
+
+            Russian.Add("home_no_items", "Нет новостей для отображения.");
+            English.Add("home_no_items", "There are no news items to display.");
+
+            Russian.Add("art_author", "Автор:");
+            English.Add("art_author", "Author:");
+
             //Russian.Add("", "");
             //English.Add("", "");
         }

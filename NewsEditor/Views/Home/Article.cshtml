@@ -32,7 +32,7 @@
         {
             <h4>@Model.SubHeader</h4>
         }
-        <p style="font-size: 16px; color: gray;">@LangPack["publication_time"] @(DateTime.Parse(Model.TimeCreated).ToString("f"))</p>
+        <p style="font-size: 16px; color: gray;">@LangPack["publication_time"] @(DateTime.Parse(Model.TimeCreated)@* .ToString("f") *@)</p>
     </div>
     <div class="col" style="padding: 1rem 1rem 1rem 5rem;">
         @Html.Partial("~/Views/UI_Components/Article_options.cshtml", Model)
@@ -48,7 +48,7 @@
     }
 </div>
 <br />
-@if(Model.User?.FullName != null)
+@if(Model.User != null)
 {
-    <p>Автор - @Model.User?.FullName</p>
+    <p>@LangPack["art_author"] @Model.User?.FullName</p>
 }

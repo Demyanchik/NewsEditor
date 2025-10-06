@@ -1,16 +1,18 @@
-﻿@{
+﻿@using NewsEditor.Models.DB;
+@{
     Dictionary<string, string> LangPack = ViewBag.LangPack;
     ViewData["Title"] = LangPack["new_art_title"];
+    var user = (Users)ViewBag.AuthorizedUser;
 }
 @section Scripts {
-    <script src="~/js/EditNews.js"></script>
+<script src="~/js/EditNews.js"></script>
 }
-    
+
 @using (Html.BeginForm("CreateArticle", "Home", FormMethod.Post, new { enctype = "multipart/form-data"}))
 {
     <style>
         form * {
-            margin-top: 8px;
+        margin-top: 8px;
         }
     </style>
     <h2>@LangPack["create_art_page_header"]</h2>
@@ -22,12 +24,15 @@
     <p id="ImageText">@LangPack["new_art_no_picture"]</p>
     <div id="ImageView" class="row" style="display: none;">
         <img id="LoadedImage" class="col" style="max-height: 600px; max-width: 800px; display: block;" />
-        <button type="button" class="col-2 btn btn-dark h-25" onclick="removeImage();">@LangPack["rm_image_btn"]</button>
+        <button type="button" class="col-2 btn btn-dark h-25" onclick="removeImage('@LangPack["edit_art_set_no_image"]');">@LangPack["rm_image_btn"]</button>
     </div>
-    <input id="NewsImage" type="file" name="image" accept="image/*" onchange="ImageLoad(this);" class="d-none">
+    <input id="NewsImage" type="file" name="image" accept="image/*" onchange="ImageLoad(this, '@LangPack["edit_art_set_image"]');" class="d-none">
     <input id="ChangeImage" type="file" name="changedImage" accept="image/*" class="d-none">
     <input type="button" class="btn btn-outline-secondary" onclick="$('#NewsImage').click();" value="@LangPack["chose_img"]">
-
+    @if (user != null)
+    {
+        <input type="hidden" name="userId" value="@user.Id" />
+    }    
     <div class="form-group col-3">
         <label for="NewsSubHeader">@LangPack["new_art_subheader"]</label>
         <input type="text" name="subHeader" class="form-control" id="NewsSubHeader" placeholder="@LangPack["new_art_subheader_undertext"]">
